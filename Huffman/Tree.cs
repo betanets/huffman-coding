@@ -108,5 +108,11 @@ namespace Huffman
             return (node.Left == null && node.Right == null);
         }
 
+        public void Clear()
+        {
+            Frequencies.Clear();
+            nodes.Clear();
+            Root = null;
+        }
     }
 }

@@ -61,6 +61,10 @@ namespace Huffman
 
         private void buildTreeAndTable()
         {
+            huffmanTree.Clear();
+            dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
+            richTextBox_result.Clear();
             /*Thread treeCreator = new Thread(() => { */
             huffmanTree.Build(keeper.getText());// });
                                                 //treeCreator.Start();
@@ -97,24 +101,16 @@ namespace Huffman
 
         private void построитьКодToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Build the Huffman tree
-            
+            huffmanKeeper.clearKeeper();
 
-            // Encode
             huffmanKeeper.setEncodedText(huffmanTree.Encode(keeper.getText()));
 
             var sb = new StringBuilder();
-            //res = Convert.ToString(encoded.ToArray());
             foreach (bool bit in huffmanKeeper.getEncodedText())
             {
                 sb.Append(bit ? 1 : 0);
             }
             richTextBox_result.Text = sb.ToString();
-            //MessageBox.Show(res);
-
-            // Decode
-            //string decoded = huffmanTree.Decode(encoded);
-            //MessageBox.Show(decoded);
         }
 
         private void декодироватьToolStripMenuItem_Click(object sender, EventArgs e)
