@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Huffman
 {
+    [Serializable]
     public class Tree
     {
         private List<Node> nodes = new List<Node>();

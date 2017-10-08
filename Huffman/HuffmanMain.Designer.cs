@@ -43,6 +43,8 @@
             this.label_tableLegend = new System.Windows.Forms.Label();
             this.label_compressionPercent = new System.Windows.Forms.Label();
             this.открытьКодToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.сохранитьДеревоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.открытьДеревоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -63,6 +65,8 @@
             this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.открытьToolStripMenuItem,
             this.открытьКодToolStripMenuItem,
+            this.открытьДеревоToolStripMenuItem,
+            this.сохранитьДеревоToolStripMenuItem,
             this.сохранитьКодToolStripMenuItem,
             this.выходToolStripMenuItem});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
@@ -188,6 +192,20 @@
             this.открытьКодToolStripMenuItem.Text = "Открыть код";
             this.открытьКодToolStripMenuItem.Click += new System.EventHandler(this.открытьКодToolStripMenuItem_Click);
             // 
+            // сохранитьДеревоToolStripMenuItem
+            // 
+            this.сохранитьДеревоToolStripMenuItem.Name = "сохранитьДеревоToolStripMenuItem";
+            this.сохранитьДеревоToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.сохранитьДеревоToolStripMenuItem.Text = "Сохранить дерево";
+            this.сохранитьДеревоToolStripMenuItem.Click += new System.EventHandler(this.сохранитьДеревоToolStripMenuItem_Click);
+            // 
+            // открытьДеревоToolStripMenuItem
+            // 
+            this.открытьДеревоToolStripMenuItem.Name = "открытьДеревоToolStripMenuItem";
+            this.открытьДеревоToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.открытьДеревоToolStripMenuItem.Text = "Открыть дерево";
+            this.открытьДеревоToolStripMenuItem.Click += new System.EventHandler(this.открытьДеревоToolStripMenuItem_Click);
+            // 
             // HuffmanMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -228,6 +246,8 @@
         private System.Windows.Forms.ToolStripMenuItem сохранитьКодToolStripMenuItem;
         private System.Windows.Forms.Label label_compressionPercent;
         private System.Windows.Forms.ToolStripMenuItem открытьКодToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem сохранитьДеревоToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem открытьДеревоToolStripMenuItem;
     }
 }
 

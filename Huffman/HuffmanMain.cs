@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Huffman
 {
@@ -59,11 +60,12 @@ namespace Huffman
                     MessageBox.Show("Не удалось прочитать файл. Подробная информация об ошибке: " + ex.Message);
                 }
 
-                buildTreeAndTable();
+                buildTree();
+                buildTable();
             }
         }
 
-        private void buildTreeAndTable()
+        private void buildTree()
         {
             huffmanTree.Clear();
             dataGridView1.Rows.Clear();
@@ -73,6 +75,9 @@ namespace Huffman
             /*Thread treeCreator = new Thread(() => { */
             huffmanTree.Build(keeper.getText());// });
                                                 //treeCreator.Start();
+        }
+
+        private void buildTable() {
             dataGridView1.Columns.Add("Key", "Символ");
             dataGridView1.Columns.Add("Count", "Кол-во");
             dataGridView1.Columns.Add("Code", "Код");
@@ -156,6 +161,23 @@ namespace Huffman
             label_compressionPercent.Text = "Степерь сжатия: " + String.Format("{0:0.000%}", ((Double)outputFileSize / inputFileSize));
         }
 
-        
+        private void сохранитьДеревоToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (FileStream fs = new FileStream("tree.dat", FileMode.OpenOrCreate))
+            {
+                formatter.Serialize(fs, huffmanTree);
+            }
+        }
+
+        private void открытьДеревоToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (FileStream fs = new FileStream("tree.dat", FileMode.OpenOrCreate))
+            {
+                huffmanTree = (Tree)formatter.Deserialize(fs);
+            }
+            buildTable();
+        }
     }
 }
