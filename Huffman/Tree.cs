@@ -1,5 +1,4 @@
-﻿//using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Huffman
@@ -29,12 +28,12 @@ namespace Huffman
 
             while (nodes.Count > 1)
             {
-                List<Node> orderedNodes = nodes.OrderBy(node => node.Frequency).ToList<Node>();
+                List<Node> orderedNodes = nodes.OrderBy(node => node.Frequency).ToList();
 
                 if (orderedNodes.Count >= 2)
                 {
                     // Take first two items
-                    List<Node> taken = orderedNodes.Take(2).ToList<Node>();
+                    List<Node> taken = orderedNodes.Take(2).ToList();
 
                     // Create a parent node by combining the frequencies
                     Node parent = new Node()
@@ -50,7 +49,7 @@ namespace Huffman
                     nodes.Add(parent);
                 }
 
-                this.Root = nodes.FirstOrDefault();
+                Root = nodes.FirstOrDefault();
 
             }
 
@@ -62,11 +61,9 @@ namespace Huffman
 
             for (int i = 0; i < source.Length; i++)
             {
-                List<bool> encodedSymbol = this.Root.Traverse(source[i], new List<bool>());
+                List<bool> encodedSymbol = Root.Traverse(source[i], new List<bool>());
                 encodedSource.AddRange(encodedSymbol);
             }
-
-            //BitArray bits = new BitArray(encodedSource.ToArray());
 
             return encodedSource;
         }
@@ -96,7 +93,7 @@ namespace Huffman
                 if (IsLeaf(current))
                 {
                     decoded += current.Symbol;
-                    current = this.Root;
+                    current = Root;
                 }
             }
 

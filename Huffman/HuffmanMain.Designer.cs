@@ -1,6 +1,6 @@
 ﻿namespace Huffman
 {
-    partial class Form1
+    partial class HuffmanMain
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -31,6 +31,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.сохранитьКодToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.операцииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.построитьКодToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,6 +41,8 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label_averageCodeLength = new System.Windows.Forms.Label();
             this.label_tableLegend = new System.Windows.Forms.Label();
+            this.label_compressionPercent = new System.Windows.Forms.Label();
+            this.открытьКодToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -59,6 +62,8 @@
             // 
             this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.открытьToolStripMenuItem,
+            this.открытьКодToolStripMenuItem,
+            this.сохранитьКодToolStripMenuItem,
             this.выходToolStripMenuItem});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
             this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
@@ -67,14 +72,21 @@
             // открытьToolStripMenuItem
             // 
             this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.открытьToolStripMenuItem.Text = "Открыть...";
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.открытьToolStripMenuItem.Text = "Открыть текст";
             this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
+            // 
+            // сохранитьКодToolStripMenuItem
+            // 
+            this.сохранитьКодToolStripMenuItem.Name = "сохранитьКодToolStripMenuItem";
+            this.сохранитьКодToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.сохранитьКодToolStripMenuItem.Text = "Сохранить код";
+            this.сохранитьКодToolStripMenuItem.Click += new System.EventHandler(this.сохранитьКодToolStripMenuItem_Click);
             // 
             // выходToolStripMenuItem
             // 
             this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
-            this.выходToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.выходToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.выходToolStripMenuItem.Text = "Выход";
             this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
             // 
@@ -152,6 +164,7 @@
             // 
             // label_tableLegend
             // 
+            this.label_tableLegend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label_tableLegend.AutoSize = true;
             this.label_tableLegend.Location = new System.Drawing.Point(727, 47);
             this.label_tableLegend.Name = "label_tableLegend";
@@ -159,11 +172,28 @@
             this.label_tableLegend.TabIndex = 5;
             this.label_tableLegend.Text = "Таблица символов";
             // 
-            // Form1
+            // label_compressionPercent
+            // 
+            this.label_compressionPercent.AutoSize = true;
+            this.label_compressionPercent.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_compressionPercent.Location = new System.Drawing.Point(202, 47);
+            this.label_compressionPercent.Name = "label_compressionPercent";
+            this.label_compressionPercent.Size = new System.Drawing.Size(0, 13);
+            this.label_compressionPercent.TabIndex = 6;
+            // 
+            // открытьКодToolStripMenuItem
+            // 
+            this.открытьКодToolStripMenuItem.Name = "открытьКодToolStripMenuItem";
+            this.открытьКодToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.открытьКодToolStripMenuItem.Text = "Открыть код";
+            this.открытьКодToolStripMenuItem.Click += new System.EventHandler(this.открытьКодToolStripMenuItem_Click);
+            // 
+            // HuffmanMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1020, 416);
+            this.Controls.Add(this.label_compressionPercent);
             this.Controls.Add(this.label_tableLegend);
             this.Controls.Add(this.label_averageCodeLength);
             this.Controls.Add(this.dataGridView1);
@@ -171,7 +201,7 @@
             this.Controls.Add(this.label_file);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "HuffmanMain";
             this.Text = "Код Хаффмана";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -195,6 +225,9 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label_averageCodeLength;
         private System.Windows.Forms.Label label_tableLegend;
+        private System.Windows.Forms.ToolStripMenuItem сохранитьКодToolStripMenuItem;
+        private System.Windows.Forms.Label label_compressionPercent;
+        private System.Windows.Forms.ToolStripMenuItem открытьКодToolStripMenuItem;
     }
 }
 

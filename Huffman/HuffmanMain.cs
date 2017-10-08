@@ -3,18 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace Huffman
 {
-    public partial class Form1 : Form
+    public partial class HuffmanMain : Form
     {
         private TextKeeper keeper;
         private HuffmanKeeper huffmanKeeper;
         private Tree huffmanTree;
 
-        public Form1()
+        private String inputFilePath;
+        private static String outputFilePath = "output.txt";   //Особой роли не играет, может быть и статическим
+
+        public HuffmanMain()
         {
             InitializeComponent();
             keeper = new TextKeeper();
@@ -29,6 +32,7 @@ namespace Huffman
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 label_file.Text = "Файл выбран: " + openFileDialog.FileName;
+                inputFilePath = openFileDialog.FileName;
                 try
                 {
                     if (openFileDialog.OpenFile() != null)
@@ -65,6 +69,7 @@ namespace Huffman
             dataGridView1.Rows.Clear();
             dataGridView1.Columns.Clear();
             richTextBox_result.Clear();
+            label_compressionPercent.Text = "";
             /*Thread treeCreator = new Thread(() => { */
             huffmanTree.Build(keeper.getText());// });
                                                 //treeCreator.Start();
@@ -94,6 +99,31 @@ namespace Huffman
             this.label_averageCodeLength.Text = "Средняя длина кода: " + String.Format("{0:0.000}", sum);
         }
 
+        private void открытьКодToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.RestoreDirectory = true;
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                label_file.Text = "Файл кода выбран: " + openFileDialog.FileName;
+                inputFilePath = openFileDialog.FileName;
+                try
+                {
+                    if (openFileDialog.OpenFile() != null)
+                    {
+                        //keeper.clearText();
+                        huffmanKeeper.clearKeeper();
+                        byte[] byteArray = File.ReadAllBytes(openFileDialog.FileName);
+                        huffmanKeeper.setEncodedText(byteArray.SelectMany(Helpers.GetBitsStartingFromLSB).ToList());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Не удалось прочитать файл кода. Подробная информация об ошибке: " + ex.Message);
+                }
+            }
+        }
+
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -117,5 +147,15 @@ namespace Huffman
         {
             richTextBox_result.Text = huffmanTree.Decode(huffmanKeeper.getEncodedText());
         }
+
+        private void сохранитьКодToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            File.WriteAllBytes(outputFilePath, Helpers.PackBoolsInByteArray(huffmanKeeper.getEncodedText()));
+            long inputFileSize = new FileInfo(inputFilePath).Length;
+            long outputFileSize = new FileInfo(outputFilePath).Length;
+            label_compressionPercent.Text = "Степерь сжатия: " + String.Format("{0:0.000%}", ((Double)outputFileSize / inputFileSize));
+        }
+
+        
     }
 }
