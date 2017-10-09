@@ -10,6 +10,7 @@ namespace Huffman
         private List<Node> nodes = new List<Node>();
         public Node Root { get; set; }
         public Dictionary<char, int> Frequencies = new Dictionary<char, int>();
+        public long textLength { get; set; }
 
         public void Build(string source)
         {

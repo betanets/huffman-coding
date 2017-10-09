@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -11,8 +10,6 @@ namespace Huffman
 {
     public partial class HuffmanMain : Form
     {
-        private TextKeeper keeper;
-        private HuffmanKeeper huffmanKeeper;
         private Tree huffmanTree;
 
         private String inputFilePath;
@@ -21,8 +18,6 @@ namespace Huffman
         public HuffmanMain()
         {
             InitializeComponent();
-            keeper = new TextKeeper();
-            huffmanKeeper = new HuffmanKeeper();
             huffmanTree = new Tree();
         }
 
@@ -38,7 +33,7 @@ namespace Huffman
                 {
                     if (openFileDialog.OpenFile() != null)
                     {
-                        keeper.clearText();
+                        var sb = new StringBuilder();
                         StreamReader sr;
                         using (sr = new StreamReader(openFileDialog.FileName))
                         {
@@ -47,58 +42,51 @@ namespace Huffman
                             while (sr.Peek() >= 0)
                             {
                                 line = sr.ReadLine();
-                                keeper.addLine(line);
+                                sb.AppendLine(line);
                                 length += line.Length;
                             }
                             sr.Close();
-                            keeper.textLength = length;
+                            huffmanTree.textLength = length;
                         }
+                        RTB_text.Text = sb.ToString();
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Не удалось прочитать файл. Подробная информация об ошибке: " + ex.Message);
                 }
-
-                buildTree();
-                buildTable();
             }
         }
 
         private void buildTree()
         {
             huffmanTree.Clear();
-            dataGridView1.Rows.Clear();
-            dataGridView1.Columns.Clear();
-            richTextBox_result.Clear();
-            label_compressionPercent.Text = "";
-            /*Thread treeCreator = new Thread(() => { */
-            huffmanTree.Build(keeper.getText());// });
-                                                //treeCreator.Start();
+            huffmanTree.textLength = RTB_text.Text.Length;
+            huffmanTree.Build(RTB_text.Text);
         }
 
         private void buildTable() {
+            label_compressionPercent.Text = "";
+            dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
             dataGridView1.Columns.Add("Key", "Символ");
             dataGridView1.Columns.Add("Count", "Кол-во");
             dataGridView1.Columns.Add("Code", "Код");
             dataGridView1.Columns[0].Width = 70;
             dataGridView1.Columns[1].Width = 70;
             dataGridView1.Columns[2].Width = 120;
+
             Double sum = 0;
             foreach (KeyValuePair<char, int> item in huffmanTree.Frequencies)
             {
-                //Node node = new Node();
                 List<bool> codeBoolean = huffmanTree.Root.Traverse(item.Key, new List<bool>());
                 var sb = new StringBuilder();
                 foreach (bool bit in codeBoolean)
                 {
                     sb.Append(bit ? 1 : 0);
                 }
-                dataGridView1.Rows.Add(item.Key,
-                                        /*String.Format("{0:0.00%}", ((Double)*/item.Value/* / keeper.textLength))*/,
-                                        sb.ToString()
-                                        );
-                sum += ((Double)item.Value / keeper.textLength) * sb.Length;
+                dataGridView1.Rows.Add(item.Key, item.Value, sb.ToString());
+                sum += ((Double)item.Value / huffmanTree.textLength) * sb.Length;
             }
             dataGridView1.Sort(dataGridView1.Columns[1], System.ComponentModel.ListSortDirection.Descending);
             this.label_averageCodeLength.Text = "Средняя длина кода: " + String.Format("{0:0.000}", sum);
@@ -116,10 +104,14 @@ namespace Huffman
                 {
                     if (openFileDialog.OpenFile() != null)
                     {
-                        //keeper.clearText();
-                        huffmanKeeper.clearKeeper();
                         byte[] byteArray = File.ReadAllBytes(openFileDialog.FileName);
-                        huffmanKeeper.setEncodedText(byteArray.SelectMany(Helpers.GetBitsStartingFromLSB).ToList());
+                        var sb = new StringBuilder();
+                        List<bool> bits = byteArray.SelectMany(Helpers.GetBitsStartingFromLSB).ToList();
+                        foreach (var b in bits)
+                        {
+                            sb.Append(b ? 1 : 0);
+                        }
+                        RTB_code.Text = sb.ToString();
                     }
                 }
                 catch (Exception ex)
@@ -136,29 +128,52 @@ namespace Huffman
 
         private void построитьКодToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            huffmanKeeper.clearKeeper();
-
-            huffmanKeeper.setEncodedText(huffmanTree.Encode(keeper.getText()));
+            List<bool> encodedBits = huffmanTree.Encode(RTB_text.Text);
 
             var sb = new StringBuilder();
-            foreach (bool bit in huffmanKeeper.getEncodedText())
+            foreach (bool bit in encodedBits)
             {
                 sb.Append(bit ? 1 : 0);
             }
-            richTextBox_result.Text = sb.ToString();
+            RTB_code.Text = sb.ToString();
         }
 
         private void декодироватьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            richTextBox_result.Text = huffmanTree.Decode(huffmanKeeper.getEncodedText());
+            List<bool> encodedBits = new List<bool>();
+            foreach (char sym in RTB_code.Text)
+            {
+                if (sym == '1') {
+                    encodedBits.Add(true);
+                }
+                else if (sym == '0')
+                {
+                    encodedBits.Add(false);
+                }
+            }
+            RTB_text.Text = huffmanTree.Decode(encodedBits);
         }
 
         private void сохранитьКодToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            File.WriteAllBytes(outputFilePath, Helpers.PackBoolsInByteArray(huffmanKeeper.getEncodedText()));
-            long inputFileSize = new FileInfo(inputFilePath).Length;
-            long outputFileSize = new FileInfo(outputFilePath).Length;
-            label_compressionPercent.Text = "Степерь сжатия: " + String.Format("{0:0.000%}", ((Double)outputFileSize / inputFileSize));
+            //TODO: move to helpers
+            List<bool> encodedBits = new List<bool>();
+            foreach (char sym in RTB_code.Text)
+            {
+                if (sym == '1')
+                {
+                    encodedBits.Add(true);
+                }
+                else if (sym == '0')
+                {
+                    encodedBits.Add(false);
+                }
+            }
+            File.WriteAllBytes(outputFilePath, Helpers.PackBoolsInByteArray(encodedBits));
+            //Расчёт ведётся по размеру в RTB. Считается, что 1 символ текста = 8 бит, 1 символ кода = 1 бит
+            long inputSize = RTB_text.Text.Length * 8;
+            long outputSize = RTB_code.Text.Length;
+            label_compressionPercent.Text = "Степерь сжатия: " + String.Format("{0:0.000%}", ((Double)outputSize / inputSize));
         }
 
         private void сохранитьДеревоToolStripMenuItem_Click(object sender, EventArgs e)
@@ -173,10 +188,28 @@ namespace Huffman
         private void открытьДеревоToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (FileStream fs = new FileStream("tree.dat", FileMode.OpenOrCreate))
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.RestoreDirectory = true;
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                huffmanTree = (Tree)formatter.Deserialize(fs);
+                try
+                {
+                    using (FileStream fs = new FileStream(openFileDialog.FileName, FileMode.Open))
+                    {
+                        huffmanTree = (Tree)formatter.Deserialize(fs);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Не удалось прочитать файл дерева. Подробная информация об ошибке: " + ex.Message);
+                }
+                buildTable();
             }
+        }
+
+        private void построитьДеревоToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            buildTree();
             buildTable();
         }
     }

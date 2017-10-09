@@ -72,11 +72,9 @@
       <DependentUpon>HuffmanMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers.cs" />
-    <Compile Include="HuffmanKeeper.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextKeeper.cs" />
     <Compile Include="Tree.cs" />
     <EmbeddedResource Include="HuffmanMain.resx">
       <DependentUpon>HuffmanMain.cs</DependentUpon>
