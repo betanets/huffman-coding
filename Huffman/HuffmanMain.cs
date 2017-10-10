@@ -12,8 +12,6 @@ namespace Huffman
     {
         private Tree huffmanTree;
 
-        //private static String outputFilePath = "output.txt";   //Особой роли не играет, может быть и статическим
-
         public HuffmanMain()
         {
             InitializeComponent();
