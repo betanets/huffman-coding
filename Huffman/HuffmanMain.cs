@@ -12,8 +12,7 @@ namespace Huffman
     {
         private Tree huffmanTree;
 
-        private String inputFilePath;
-        private static String outputFilePath = "output.txt";   //Особой роли не играет, может быть и статическим
+        //private static String outputFilePath = "output.txt";   //Особой роли не играет, может быть и статическим
 
         public HuffmanMain()
         {
@@ -28,7 +27,6 @@ namespace Huffman
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 label_file.Text = "Файл выбран: " + openFileDialog.FileName;
-                inputFilePath = openFileDialog.FileName;
                 try
                 {
                     if (openFileDialog.OpenFile() != null)
@@ -99,7 +97,6 @@ namespace Huffman
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 label_file.Text = "Файл кода выбран: " + openFileDialog.FileName;
-                inputFilePath = openFileDialog.FileName;
                 try
                 {
                     if (openFileDialog.OpenFile() != null)
@@ -169,20 +166,52 @@ namespace Huffman
                     encodedBits.Add(false);
                 }
             }
-            File.WriteAllBytes(outputFilePath, Helpers.PackBoolsInByteArray(encodedBits));
-            //Расчёт ведётся по размеру в RTB. Считается, что 1 символ текста = 8 бит, 1 символ кода = 1 бит
-            long inputSize = RTB_text.Text.Length * 8;
-            long outputSize = RTB_code.Text.Length;
-            label_compressionPercent.Text = "Степерь сжатия: " + String.Format("{0:0.000%}", ((Double)outputSize / inputSize));
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.RestoreDirectory = true;
+            saveFileDialog.Filter = "Бинарный файл|*.bin";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    using (FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.Create))
+                    {
+                        byte[] bytes = Helpers.PackBoolsInByteArray(encodedBits);
+                        fs.Write(bytes, 0, bytes.Length);
+                    }
+
+                    //Расчёт ведётся по размеру в RTB. Считается, что 1 символ текста = 8 бит, 1 символ кода = 1 бит
+                    long inputSize = RTB_text.Text.Length * 8;
+                    long outputSize = RTB_code.Text.Length;
+                    label_compressionPercent.Text = "Степерь сжатия: " + String.Format("{0:0.000%}", ((Double)outputSize / inputSize));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Не удалось сохранить файл кода. Подробная информация об ошибке: " + ex.Message);
+                }
+            }
         }
 
         private void сохранитьДеревоToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (FileStream fs = new FileStream("tree.dat", FileMode.OpenOrCreate))
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.RestoreDirectory = true;
+            saveFileDialog.Filter = "Бинарный файл|*.bin";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                formatter.Serialize(fs, huffmanTree);
-            }
+                try
+                {
+                    using (FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.Create))
+                    {
+                        formatter.Serialize(fs, huffmanTree);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Не удалось сохранить файл дерева. Подробная информация об ошибке: " + ex.Message);
+                }
+            }      
         }
 
         private void открытьДеревоToolStripMenuItem_Click(object sender, EventArgs e)

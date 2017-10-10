@@ -33,8 +33,10 @@
             this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.открытьКодToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.открытьДеревоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.сохранитьДеревоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сохранитьКодToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.операцииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.построитьДеревоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,8 +51,6 @@
             this.RTB_code = new System.Windows.Forms.RichTextBox();
             this.label_text = new System.Windows.Forms.Label();
             this.label_code = new System.Windows.Forms.Label();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -64,7 +64,7 @@
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1020, 24);
             this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.Text = "menuStrip";
             // 
             // файлToolStripMenuItem
             // 
@@ -102,6 +102,11 @@
             this.открытьДеревоToolStripMenuItem.Text = "Открыть дерево";
             this.открытьДеревоToolStripMenuItem.Click += new System.EventHandler(this.открытьДеревоToolStripMenuItem_Click);
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(170, 6);
+            // 
             // сохранитьДеревоToolStripMenuItem
             // 
             this.сохранитьДеревоToolStripMenuItem.Name = "сохранитьДеревоToolStripMenuItem";
@@ -115,6 +120,11 @@
             this.сохранитьКодToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.сохранитьКодToolStripMenuItem.Text = "Сохранить код";
             this.сохранитьКодToolStripMenuItem.Click += new System.EventHandler(this.сохранитьКодToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(170, 6);
             // 
             // выходToolStripMenuItem
             // 
@@ -251,16 +261,6 @@
             this.label_code.TabIndex = 9;
             this.label_code.Text = "Код:";
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(170, 6);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(170, 6);
-            // 
             // HuffmanMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -280,6 +280,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "HuffmanMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Код Хаффмана";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
